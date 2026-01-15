@@ -1,0 +1,30 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/home/index",
+    "pages/exchange/index",
+    "pages/points/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "商家端",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f8fa",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/home/index", "text": "礼品" },
+      { "pagePath": "pages/exchange/index", "text": "兑换" },
+      { "pagePath": "pages/points/index", "text": "积分" },
+      { "pagePath": "pages/profile/index", "text": "我的" }
+    ]
+  }
+}
+
+

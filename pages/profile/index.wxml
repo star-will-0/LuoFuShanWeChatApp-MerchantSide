@@ -1,0 +1,45 @@
+<view class="card">
+  <view class="row">
+    <view>
+      <view style="font-weight:600; font-size:34rpx;">{{profile.name || '商家'}}</view>
+      <view class="muted" style="margin-top: 4rpx; font-size: 24rpx;">
+        <text wx:if="{{profile.type}}">{{profile.type}}</text>
+        <text wx:if="{{profile.status === 1}}"> · 已启用</text>
+        <text wx:if="{{profile.status === 0}}"> · 已禁用</text>
+      </view>
+    </view>
+    <button size="mini" bindtap="onLogout">退出登录</button>
+  </view>
+</view>
+
+<view class="card">
+  <view style="font-weight:600; margin-bottom: 10rpx;">运营信息</view>
+
+  <view style="margin-bottom: 14rpx;">
+    <view class="muted" style="margin-bottom: 6rpx;">联系人信息</view>
+    <input placeholder="请输入联系人姓名和电话" value="{{contact}}" bindinput="onContactInput" />
+  </view>
+
+  <view style="margin-bottom: 14rpx;">
+    <view class="muted" style="margin-bottom: 6rpx;">商家地址</view>
+    <input placeholder="请输入商家地址" value="{{address}}" bindinput="onAddressInput" />
+  </view>
+
+  <button class="btn-primary" loading="{{saving}}" disabled="{{saving}}" bindtap="onSave">
+    保存修改
+  </button>
+</view>
+
+<view class="card">
+  <view class="muted" style="font-size: 24rpx;">
+    商家ID：{{profile.merchantId}}
+  </view>
+  <view class="muted" style="margin-top: 6rpx; font-size: 24rpx;" wx:if="{{profile.createdAt}}">
+    创建时间：{{profile.createdAt}}
+  </view>
+  <view class="muted" style="margin-top: 6rpx; font-size: 24rpx;" wx:if="{{profile.updatedAt}}">
+    最近更新：{{profile.updatedAt}}
+  </view>
+</view>
+
+

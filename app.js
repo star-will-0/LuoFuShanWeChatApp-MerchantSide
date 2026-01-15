@@ -1,0 +1,7 @@
+App({
+  globalData: {
+    merchant: null,
+  },
+});
+
+

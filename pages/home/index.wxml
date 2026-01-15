@@ -1,0 +1,47 @@
+<view class="card">
+  <view class="row">
+    <view>
+      <text style="font-weight:600;">{{merchantName}}</text>
+      <text class="muted" style="margin-left: 12rpx; font-size: 24rpx;">礼品兑换管理</text>
+    </view>
+    <button size="mini" bindtap="onLogout">退出</button>
+  </view>
+
+  <view class="row" style="margin-top: 18rpx;">
+    <view>
+      <text class="muted">积分排序：</text>
+      <picker mode="selector" range="{{sortOptions}}" range-key="label" value="{{sortIndex}}" bindchange="onSortChange">
+        <text style="padding: 8rpx 12rpx; border: 1rpx solid #e6e8eb; border-radius: 12rpx;">{{sortOptions[sortIndex].label}}</text>
+      </picker>
+    </view>
+    <view class="muted" style="font-size: 24rpx;">第 {{page}} 页</view>
+  </view>
+</view>
+
+<view>
+  <block wx:for="{{items}}" wx:key="id">
+    <view class="card">
+      <view class="row">
+        <text style="font-weight:600;">{{item.name || item.itemName || ('礼品#' + item.id)}}</text>
+        <text style="font-weight:600;">{{item.points}} 积分</text>
+      </view>
+      <view class="muted" style="margin-top: 10rpx;">
+        <text wx:if="{{item.stock !== undefined}}">库存：{{item.stock}}</text>
+        <text wx:if="{{item.stock !== undefined && item.createdAt}}">｜</text>
+        <text wx:if="{{item.createdAt}}">创建：{{item.createdAt}}</text>
+      </view>
+    </view>
+  </block>
+</view>
+
+<view class="card" wx:if="{{items.length === 0 && !loading}}">
+  <text class="muted">暂无数据</text>
+</view>
+
+<view class="card">
+  <button class="btn-primary" loading="{{loading}}" disabled="{{loading || !hasMore}}" bindtap="loadMore">
+    {{hasMore ? '加载更多' : '没有更多了'}}
+  </button>
+</view>
+
+

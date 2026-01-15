@@ -1,0 +1,76 @@
+<view class="card">
+  <view class="row">
+    <text style="font-weight:600;">核销兑换码</text>
+    <view class="muted" style="font-size:24rpx;">
+      <text wx:if="{{status==='redeemed'}}">当前筛选：已核销</text>
+      <text wx:else>当前筛选：未核销</text>
+    </view>
+  </view>
+
+  <view style="margin-top: 14rpx;">
+    <input placeholder="输入兑换卡密，例如 D92F-A2CD-89FE" value="{{redeemCode}}" bindinput="onRedeemCodeInput" />
+  </view>
+
+  <button class="btn-primary" style="margin-top: 16rpx;" loading="{{redeemLoading}}" disabled="{{redeemLoading}}" bindtap="onRedeem">
+    立即核销
+  </button>
+
+  <view wx:if="{{redeemResult}}" class="card" style="margin: 20rpx 0 0 0;">
+    <view class="row">
+      <text style="font-weight:600;">核销结果</text>
+      <text class="muted" style="font-size:24rpx;">{{redeemResult.redeemedAt || ''}}</text>
+    </view>
+    <view style="margin-top: 10rpx;">
+      <text>订单ID：{{redeemResult.recordId}}</text>
+    </view>
+    <view style="margin-top: 6rpx;">
+      <text>礼品：{{redeemResult.itemName}}</text>
+    </view>
+    <view style="margin-top: 6rpx;">
+      <text>卡密：{{redeemResult.code}}</text>
+    </view>
+    <view style="margin-top: 6rpx;">
+      <text>门店：{{redeemResult.placeName}}</text>
+    </view>
+  </view>
+</view>
+
+<view class="card">
+  <view class="row">
+    <text style="font-weight:600;">兑换记录</text>
+    <view class="row" style="gap: 12rpx;">
+      <button size="mini" class="{{status==='unredeemed' ? 'btn-primary' : ''}}" bindtap="setUnredeemed">未核销</button>
+      <button size="mini" class="{{status==='redeemed' ? 'btn-primary' : ''}}" bindtap="setRedeemed">已核销</button>
+    </view>
+  </view>
+  <view class="muted" style="margin-top: 10rpx; font-size: 24rpx;">第 {{page}} 页</view>
+</view>
+
+<block wx:for="{{records}}" wx:key="recordId">
+  <view class="card">
+    <view class="row">
+      <text style="font-weight:600;">{{item.itemName || ('礼品#' + item.itemId)}}</text>
+      <text style="font-weight:600;">{{item.isRedeemed ? '已核销' : '未核销'}}</text>
+    </view>
+    <view class="muted" style="margin-top: 10rpx;">
+      <text>卡密：{{item.code}}</text>
+    </view>
+    <view class="muted" style="margin-top: 6rpx;">
+      <text wx:if="{{item.placeName}}">门店：{{item.placeName}}</text>
+      <text wx:if="{{item.placeName && item.redeemedAt}}">｜</text>
+      <text wx:if="{{item.redeemedAt}}">时间：{{item.redeemedAt}}</text>
+    </view>
+  </view>
+</block>
+
+<view class="card" wx:if="{{records.length === 0 && !listLoading}}">
+  <text class="muted">暂无记录</text>
+</view>
+
+<view class="card">
+  <button class="btn-primary" loading="{{listLoading}}" disabled="{{listLoading || !hasMore}}" bindtap="loadMore">
+    {{hasMore ? '加载更多' : '没有更多了'}}
+  </button>
+</view>
+
+
