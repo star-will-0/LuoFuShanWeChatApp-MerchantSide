@@ -1,12 +1,30 @@
-input {
-  border: 1rpx solid #e6e8eb;
-  border-radius: 12rpx;
-  padding: 18rpx 16rpx;
-  background: #fff;
+.input-group input {
+  min-height: 80rpx;
+  padding: 26rpx 20rpx;
+  line-height: 1.6;
 }
 
-button {
-  border-radius: 12rpx;
+.query-card {
+  background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+  border: 2rpx solid #e6f4ff;
+}
+
+.update-card {
+  margin-top: 0;
+}
+
+.points-display {
+  padding: 20rpx 0;
+}
+
+.points-value {
+  display: flex;
+  align-items: baseline;
+  margin-top: 8rpx;
+}
+
+.update-result {
+  padding: 20rpx 0;
 }
 
 

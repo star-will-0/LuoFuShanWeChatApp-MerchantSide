@@ -1,5 +1,78 @@
-button {
+.header-card {
+  background: linear-gradient(135deg, #07c160 0%, #06ad56 100%);
+  color: #fff;
+  margin-bottom: 0;
+  border-radius: 0 0 20rpx 20rpx;
+  padding: 32rpx 28rpx;
+}
+
+.header-card .text-title {
+  color: #fff;
+}
+
+.header-card .muted {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.logout-btn-wrapper {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4rpx;
+}
+
+.logout-btn {
+  padding: 16rpx 32rpx;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1rpx solid rgba(255, 255, 255, 0.4);
+  border-radius: 28rpx;
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8rpx);
+}
+
+.logout-btn:active {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0.95);
+}
+
+.filter-card {
+  margin-top: 0;
+  border-radius: 0;
+  padding: 24rpx 28rpx;
+  background: #fafbfc;
+}
+
+.picker-trigger {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 20rpx;
+  background: #fff;
+  border: 2rpx solid #e6e8eb;
   border-radius: 12rpx;
+  font-size: 26rpx;
+}
+
+.item-card {
+  margin-top: 0;
+  border-radius: 16rpx;
+  transition: all 0.2s ease;
+}
+
+.item-card:active {
+  background: #f8f9fa;
+}
+
+.points-badge {
+  display: flex;
+  align-items: baseline;
+  padding: 12rpx 20rpx;
+  background: #f0f9f4;
+  border-radius: 12rpx;
+  min-width: 120rpx;
+  justify-content: center;
 }
 
 

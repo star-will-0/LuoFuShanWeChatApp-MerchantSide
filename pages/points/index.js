@@ -26,6 +26,24 @@ Page({
     ensureLogin();
   },
 
+  onHide() {
+    // 页面隐藏时重置状态
+    this.resetState();
+  },
+
+  // 重置页面状态
+  resetState() {
+    this.setData({
+      userId: '',
+      delta: '',
+      reason: '',
+      queryLoading: false,
+      updateLoading: false,
+      pointsInfo: null,
+      updateResult: null,
+    });
+  },
+
   onUserIdInput(e) {
     this.setData({ userId: (e.detail && e.detail.value) || '' });
   },
@@ -80,7 +98,13 @@ Page({
     this.setData({ updateLoading: true, updateResult: null });
     try {
       const res = await merchantUserPointsUpdateApi({ userId: id, delta: d, reason: (reason || '').trim() });
-      this.setData({ updateResult: res.data || null, pointsInfo: res.data || this.data.pointsInfo });
+      this.setData({ 
+        updateResult: res.data || null, 
+        pointsInfo: res.data || this.data.pointsInfo,
+        // 更新成功后清空积分变更值
+        delta: '',
+        reason: ''
+      });
       wx.showToast({ title: '更新成功', icon: 'success' });
     } catch (e) {
       console.log('update points failed', e);

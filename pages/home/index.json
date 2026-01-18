@@ -1,6 +1,7 @@
 {
-  "navigationBarTitleText": "礼品列表",
-  "enablePullDownRefresh": true
+  "navigationBarTitleText": "礼品管理",
+  "enablePullDownRefresh": true,
+  "navigationBarTextStyle": "black"
 }
 
 

@@ -25,11 +25,27 @@ Page({
     hasMore: true,
   },
 
+  onLoad() {
+    // 设置右上角退出按钮
+    wx.setNavigationBarColor({
+      frontColor: '#000000',
+      backgroundColor: '#ffffff'
+    });
+  },
+
   onShow() {
     if (!ensureLogin()) return;
     const profile = wx.getStorageSync('merchant_profile') || {};
     this.setData({ merchantName: profile.name || '商家' });
     this.refresh();
+  },
+
+  onShareAppMessage() {
+    // 隐藏分享按钮，使用自定义菜单
+    return {
+      title: '商家端',
+      path: '/pages/home/index'
+    };
   },
 
   onPullDownRefresh() {

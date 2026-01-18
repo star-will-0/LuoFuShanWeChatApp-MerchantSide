@@ -4,7 +4,8 @@
     "pages/home/index",
     "pages/exchange/index",
     "pages/points/index",
-    "pages/profile/index"
+    "pages/profile/index",
+    "pages/resource/edit"
   ],
   "window": {
     "navigationBarTitleText": "商家端",
@@ -19,10 +20,30 @@
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [
-      { "pagePath": "pages/home/index", "text": "礼品" },
-      { "pagePath": "pages/exchange/index", "text": "兑换" },
-      { "pagePath": "pages/points/index", "text": "积分" },
-      { "pagePath": "pages/profile/index", "text": "我的" }
+      { 
+        "pagePath": "pages/home/index", 
+        "text": "礼品",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
+      },
+      { 
+        "pagePath": "pages/exchange/index", 
+        "text": "兑换",
+        "iconPath": "images/exchange.png",
+        "selectedIconPath": "images/exchange-active.png"
+      },
+      { 
+        "pagePath": "pages/points/index", 
+        "text": "积分",
+        "iconPath": "images/points.png",
+        "selectedIconPath": "images/points-active.png"
+      },
+      { 
+        "pagePath": "pages/profile/index", 
+        "text": "我的",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-active.png"
+      }
     ]
   }
 }

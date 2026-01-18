@@ -1,75 +1,118 @@
-<view class="card">
-  <view class="row">
-    <text style="font-weight:600;">核销兑换码</text>
-    <view class="muted" style="font-size:24rpx;">
-      <text wx:if="{{status==='redeemed'}}">当前筛选：已核销</text>
-      <text wx:else>当前筛选：未核销</text>
-    </view>
+<view class="card redeem-card">
+  <view class="section-header">
+    <view class="text-title">🎫 核销兑换码</view>
+  </view>
+  
+  <view class="input-group" style="margin-top: 24rpx;">
+    <view class="text-label">兑换卡密</view>
+    <input 
+      placeholder="输入兑换卡密，例如 D92F-A2CD-89FE" 
+      value="{{redeemCode}}" 
+      bindinput="onRedeemCodeInput"
+      maxlength="64"
+    />
   </view>
 
-  <view style="margin-top: 14rpx;">
-    <input placeholder="输入兑换卡密，例如 D92F-A2CD-89FE" value="{{redeemCode}}" bindinput="onRedeemCodeInput" />
-  </view>
-
-  <button class="btn-primary" style="margin-top: 16rpx;" loading="{{redeemLoading}}" disabled="{{redeemLoading}}" bindtap="onRedeem">
-    立即核销
+  <button 
+    class="btn-primary" 
+    style="margin-top: 32rpx; width: 100%;" 
+    loading="{{redeemLoading}}" 
+    disabled="{{redeemLoading}}" 
+    bindtap="onRedeem"
+  >
+    {{redeemLoading ? '核销中...' : '立即核销'}}
   </button>
 
-  <view wx:if="{{redeemResult}}" class="card" style="margin: 20rpx 0 0 0;">
-    <view class="row">
-      <text style="font-weight:600;">核销结果</text>
-      <text class="muted" style="font-size:24rpx;">{{redeemResult.redeemedAt || ''}}</text>
+  <view wx:if="{{redeemResult}}" class="result-card">
+    <view class="row" style="margin-bottom: 20rpx;">
+      <view class="text-subtitle">✅ 核销成功</view>
+      <view class="badge badge-success">已完成</view>
     </view>
-    <view style="margin-top: 10rpx;">
-      <text>订单ID：{{redeemResult.recordId}}</text>
+    <view class="divider"></view>
+    <view class="result-item">
+      <text class="muted">订单ID：</text>
+      <text class="text-subtitle">{{redeemResult.exchangeId}}</text>
     </view>
-    <view style="margin-top: 6rpx;">
-      <text>礼品：{{redeemResult.itemName}}</text>
+    <view class="result-item" style="margin-top: 16rpx;">
+      <text class="muted">礼品名称：</text>
+      <text class="text-subtitle">{{redeemResult.itemName}}</text>
     </view>
-    <view style="margin-top: 6rpx;">
-      <text>卡密：{{redeemResult.code}}</text>
+    <view class="result-item" style="margin-top: 16rpx;">
+      <text class="muted">核销门店：</text>
+      <text class="text-subtitle">{{redeemResult.placeName}}</text>
     </view>
-    <view style="margin-top: 6rpx;">
-      <text>门店：{{redeemResult.placeName}}</text>
+    <view class="result-item" style="margin-top: 16rpx;">
+      <text class="muted">核销时间：</text>
+      <text class="text-subtitle">{{redeemResult.redeemedAt}}</text>
     </view>
   </view>
 </view>
 
-<view class="card">
-  <view class="row">
-    <text style="font-weight:600;">兑换记录</text>
-    <view class="row" style="gap: 12rpx;">
-      <button size="mini" class="{{status==='unredeemed' ? 'btn-primary' : ''}}" bindtap="setUnredeemed">未核销</button>
-      <button size="mini" class="{{status==='redeemed' ? 'btn-primary' : ''}}" bindtap="setRedeemed">已核销</button>
+<view class="card filter-card">
+  <view class="section-header">
+    <view class="text-subtitle">📋 兑换记录</view>
+    <view class="row gap-small">
+      <button 
+        size="mini" 
+        class="{{status==='unredeemed' ? 'btn-primary' : 'btn-secondary'}}" 
+        bindtap="setUnredeemed"
+      >
+        未核销
+      </button>
+      <button 
+        size="mini" 
+        class="{{status==='redeemed' ? 'btn-primary' : 'btn-secondary'}}" 
+        bindtap="setRedeemed"
+      >
+        已核销
+      </button>
     </view>
   </view>
-  <view class="muted" style="margin-top: 10rpx; font-size: 24rpx;">第 {{page}} 页</view>
+  <view class="muted" style="margin-top: 16rpx; font-size: 24rpx;">第 {{page}} 页</view>
 </view>
 
 <block wx:for="{{records}}" wx:key="recordId">
-  <view class="card">
+  <view class="card record-card">
     <view class="row">
-      <text style="font-weight:600;">{{item.itemName || ('礼品#' + item.itemId)}}</text>
-      <text style="font-weight:600;">{{item.isRedeemed ? '已核销' : '未核销'}}</text>
-    </view>
-    <view class="muted" style="margin-top: 10rpx;">
-      <text>卡密：{{item.code}}</text>
-    </view>
-    <view class="muted" style="margin-top: 6rpx;">
-      <text wx:if="{{item.placeName}}">门店：{{item.placeName}}</text>
-      <text wx:if="{{item.placeName && item.redeemedAt}}">｜</text>
-      <text wx:if="{{item.redeemedAt}}">时间：{{item.redeemedAt}}</text>
+      <view class="flex-column" style="flex: 1;">
+        <view class="text-subtitle">{{item.itemName || ('礼品#' + item.itemId)}}</view>
+        <view class="muted" style="margin-top: 12rpx; font-size: 24rpx;">
+          🔑 卡密：{{item.code}}
+        </view>
+        <view class="row" style="margin-top: 12rpx; gap: 16rpx;">
+          <view class="muted" wx:if="{{item.placeName}}" style="font-size: 24rpx;">
+            🏪 {{item.placeName}}
+          </view>
+          <view class="muted" wx:if="{{item.redeemedAt}}" style="font-size: 24rpx;">
+            ⏰ {{item.redeemedAt}}
+          </view>
+        </view>
+      </view>
+      <view>
+        <view class="badge {{item.isRedeemed ? 'badge-success' : 'badge-warning'}}">
+          {{item.isRedeemed ? '已核销' : '未核销'}}
+        </view>
+      </view>
     </view>
   </view>
 </block>
 
 <view class="card" wx:if="{{records.length === 0 && !listLoading}}">
-  <text class="muted">暂无记录</text>
+  <view class="empty-state">
+    <view class="empty-state-icon">📝</view>
+    <text>暂无{{status === 'redeemed' ? '已核销' : '未核销'}}记录</text>
+  </view>
 </view>
 
-<view class="card">
-  <button class="btn-primary" loading="{{listLoading}}" disabled="{{listLoading || !hasMore}}" bindtap="loadMore">
-    {{hasMore ? '加载更多' : '没有更多了'}}
+<view class="card" wx:if="{{records.length > 0}}">
+  <button 
+    class="btn-primary" 
+    style="width: 100%;" 
+    loading="{{listLoading}}" 
+    disabled="{{listLoading || !hasMore}}" 
+    bindtap="loadMore"
+  >
+    {{listLoading ? '加载中...' : (hasMore ? '加载更多' : '没有更多了')}}
   </button>
 </view>
 

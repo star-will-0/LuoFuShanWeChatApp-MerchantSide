@@ -1,44 +1,52 @@
-<view class="card">
+<view class="card profile-header-card">
   <view class="row">
-    <view>
-      <view style="font-weight:600; font-size:34rpx;">{{profile.name || '商家'}}</view>
-      <view class="muted" style="margin-top: 4rpx; font-size: 24rpx;">
-        <text wx:if="{{profile.type}}">{{profile.type}}</text>
-        <text wx:if="{{profile.status === 1}}"> · 已启用</text>
-        <text wx:if="{{profile.status === 0}}"> · 已禁用</text>
+    <view class="flex-column" style="flex: 1;">
+      <view class="text-title">{{profile.merchantName || '商家'}}</view>
+      <view class="badge-group" style="margin-top: 16rpx;">
+        <view class="badge badge-info" wx:if="{{profile.merchantType}}">
+          {{profile.merchantType}}
+        </view>
+        <view class="badge {{profile.status === 1 ? 'badge-success' : 'badge-danger'}}" wx:if="{{profile.status !== undefined}}">
+          {{profile.status === 1 ? '已启用' : '已禁用'}}
+        </view>
       </view>
     </view>
-    <button size="mini" bindtap="onLogout">退出登录</button>
+    <view class="logout-btn-wrapper">
+      <view class="logout-btn" bindtap="onLogout">
+        <text>退出</text>
+      </view>
+    </view>
   </view>
 </view>
 
-<view class="card">
-  <view style="font-weight:600; margin-bottom: 10rpx;">运营信息</view>
-
-  <view style="margin-bottom: 14rpx;">
-    <view class="muted" style="margin-bottom: 6rpx;">联系人信息</view>
-    <input placeholder="请输入联系人姓名和电话" value="{{contact}}" bindinput="onContactInput" />
+<view class="card info-card">
+  <view class="text-subtitle" style="margin-bottom: 24rpx;">📋 账户信息</view>
+  
+  <view class="info-item">
+    <text class="muted">商家ID</text>
+    <text class="text-subtitle">{{profile.merchantId || '-'}}</text>
   </view>
-
-  <view style="margin-bottom: 14rpx;">
-    <view class="muted" style="margin-bottom: 6rpx;">商家地址</view>
-    <input placeholder="请输入商家地址" value="{{address}}" bindinput="onAddressInput" />
+  
+  <view class="divider" wx:if="{{profile.resourceId}}"></view>
+  
+  <view class="info-item" wx:if="{{profile.resourceId}}">
+    <text class="muted">资源ID</text>
+    <text class="text-subtitle">{{profile.resourceId}}</text>
   </view>
-
-  <button class="btn-primary" loading="{{saving}}" disabled="{{saving}}" bindtap="onSave">
-    保存修改
-  </button>
-</view>
-
-<view class="card">
-  <view class="muted" style="font-size: 24rpx;">
-    商家ID：{{profile.merchantId}}
+  
+  <view class="divider" wx:if="{{profile.resourceId && profile.createdAt}}"></view>
+  
+  <view class="info-item" wx:if="{{profile.createdAt}}">
+    <text class="muted">创建时间</text>
+    <text class="text-subtitle">{{profile.createdAt}}</text>
   </view>
-  <view class="muted" style="margin-top: 6rpx; font-size: 24rpx;" wx:if="{{profile.createdAt}}">
-    创建时间：{{profile.createdAt}}
-  </view>
-  <view class="muted" style="margin-top: 6rpx; font-size: 24rpx;" wx:if="{{profile.updatedAt}}">
-    最近更新：{{profile.updatedAt}}
+  
+  <view class="divider" wx:if="{{profile.createdAt && profile.resourceId}}"></view>
+  
+  <view wx:if="{{profile.resourceId}}" style="margin-top: 24rpx;">
+    <button class="btn-primary" style="width: 100%;" bindtap="onEditResource">
+      📝 编辑资源信息
+    </button>
   </view>
 </view>
 

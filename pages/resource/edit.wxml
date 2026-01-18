@@ -1,0 +1,196 @@
+<view wx:if="{{loading}}" class="loading-wrapper">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>
+
+<view wx:else>
+  <!-- 资源基础信息 -->
+  <view class="card resource-card">
+    <view class="section-header">
+      <view class="section-title-wrapper">
+        <view class="section-icon">📝</view>
+        <view class="text-title">基础信息</view>
+      </view>
+      <button size="mini" class="{{editBase ? 'btn-danger' : 'btn-secondary'}}" bindtap="toggleEditBase">
+        {{editBase ? '取消' : '编辑'}}
+      </button>
+    </view>
+
+    <view wx:if="{{!editBase}}" class="info-display">
+      <view class="info-item-enhanced">
+        <view class="info-label-wrapper">
+          <text class="info-icon">🏷️</text>
+          <text class="muted">资源名称</text>
+        </view>
+        <text class="text-subtitle info-value">{{resource.name || '-'}}</text>
+      </view>
+      
+      <view class="divider" wx:if="{{resource.name}}"></view>
+      
+      <view class="info-item-enhanced" wx:if="{{resource.coverImg}}">
+        <view class="info-label-wrapper">
+          <text class="info-icon">🖼️</text>
+          <text class="muted">封面图</text>
+        </view>
+        <view class="cover-image-wrapper">
+          <image src="{{resource.coverImg}}" mode="aspectFill" class="cover-image" binderror="onImageError" lazy-load />
+        </view>
+      </view>
+      
+      <view class="divider" wx:if="{{resource.coverImg && (resource.latitude || resource.longitude)}}"></view>
+      
+      <view class="info-item-enhanced" wx:if="{{resource.latitude || resource.longitude}}">
+        <view class="info-label-wrapper">
+          <text class="info-icon">📍</text>
+          <text class="muted">位置坐标</text>
+        </view>
+        <text class="text-subtitle info-value">{{resource.latitude}}, {{resource.longitude}}</text>
+      </view>
+      
+      <view class="divider" wx:if="{{resource.hotScore !== undefined}}"></view>
+      
+      <view class="info-item-enhanced" wx:if="{{resource.hotScore !== undefined}}">
+        <view class="info-label-wrapper">
+          <text class="info-icon">🔥</text>
+          <text class="muted">热度评分</text>
+        </view>
+        <view class="hot-score-badge">
+          <text class="hot-score-value">{{resource.hotScore}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="edit-form">
+      <view class="input-group-enhanced">
+        <view class="input-label-wrapper">
+          <text class="input-icon">🏷️</text>
+          <view class="text-label">资源名称 <text class="required-mark">*</text></view>
+        </view>
+        <input placeholder="请输入资源名称" value="{{baseForm.name}}" bindinput="onNameInput" maxlength="64" class="enhanced-input" />
+      </view>
+
+      <view class="input-group-enhanced" style="margin-top: 32rpx;">
+        <view class="input-label-wrapper">
+          <text class="input-icon">🖼️</text>
+          <view class="text-label">封面图 URL</view>
+        </view>
+        <input placeholder="请输入封面图链接" value="{{baseForm.coverImg}}" bindinput="onCoverImgInput" class="enhanced-input" />
+        <view class="input-hint">支持 http:// 或 https:// 开头的图片链接</view>
+      </view>
+
+      <view class="row" style="margin-top: 32rpx; gap: 16rpx;">
+        <view class="input-group-enhanced" style="flex: 1;">
+          <view class="input-label-wrapper">
+            <text class="input-icon">📍</text>
+            <view class="text-label">纬度</view>
+          </view>
+          <input type="digit" placeholder="例如：23.123456" value="{{baseForm.latitude}}" bindinput="onLatitudeInput" class="enhanced-input" />
+        </view>
+        <view class="input-group-enhanced" style="flex: 1;">
+          <view class="input-label-wrapper">
+            <text class="input-icon">📍</text>
+            <view class="text-label">经度</view>
+          </view>
+          <input type="digit" placeholder="例如：114.123456" value="{{baseForm.longitude}}" bindinput="onLongitudeInput" class="enhanced-input" />
+        </view>
+      </view>
+
+      <button class="btn-primary save-btn" loading="{{saving}}" disabled="{{saving}}" bindtap="onSaveBase">
+        {{saving ? '保存中...' : '💾 保存基础信息'}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 资源内容 -->
+  <view class="card content-card">
+    <view class="section-header">
+      <view class="section-title-wrapper">
+        <view class="section-icon">📄</view>
+        <view class="text-title">内容管理</view>
+      </view>
+      <button size="mini" class="{{editContent ? 'btn-danger' : 'btn-secondary'}}" bindtap="toggleEditContent">
+        {{editContent ? '取消' : '编辑'}}
+      </button>
+    </view>
+
+    <view wx:if="{{!editContent}}" class="content-display">
+      <block wx:for="{{resource.content}}" wx:key="index">
+        <view class="content-block-enhanced">
+          <view class="content-type-badge">
+            <text wx:if="{{item.type === 'text'}}" class="type-icon">📝</text>
+            <text wx:elif="{{item.type === 'image'}}" class="type-icon">🖼️</text>
+            <text wx:elif="{{item.type === 'video'}}" class="type-icon">🎬</text>
+            <text class="type-label">{{item.type === 'text' ? '文本' : (item.type === 'image' ? '图片' : '视频')}}</text>
+          </view>
+          <view wx:if="{{item.type === 'text'}}" class="content-text-enhanced">
+            <text>{{item.value}}</text>
+          </view>
+          <view wx:elif="{{item.type === 'image'}}" class="content-image-enhanced">
+            <image src="{{item.value}}" mode="aspectFill" class="content-image" binderror="onImageError" lazy-load />
+          </view>
+          <view wx:elif="{{item.type === 'video'}}" class="content-video-enhanced">
+            <video src="{{item.value}}" controls class="content-video"></video>
+          </view>
+        </view>
+      </block>
+      <view wx:if="{{!resource.content || resource.content.length === 0}}" class="empty-state-enhanced">
+        <view class="empty-state-icon">📄</view>
+        <text class="empty-state-text">暂无内容</text>
+        <text class="empty-state-hint">点击"编辑"按钮添加内容</text>
+      </view>
+    </view>
+
+    <view wx:else class="edit-content">
+      <block wx:for="{{contentBlocks}}" wx:key="index">
+        <view class="content-edit-block-enhanced">
+          <view class="content-edit-header">
+            <view class="content-type-badge-edit">
+              <text wx:if="{{item.type === 'text'}}" class="type-icon-small">📝</text>
+              <text wx:elif="{{item.type === 'image'}}" class="type-icon-small">🖼️</text>
+              <text wx:elif="{{item.type === 'video'}}" class="type-icon-small">🎬</text>
+              <view class="badge badge-info">{{item.type === 'text' ? '文本' : (item.type === 'image' ? '图片' : '视频')}}</view>
+            </view>
+            <button size="mini" class="btn-danger btn-delete" bindtap="removeContentBlock" data-index="{{index}}">🗑️ 删除</button>
+          </view>
+          <input 
+            wx:if="{{item.type === 'text'}}"
+            placeholder="请输入文本内容（最多500字）" 
+            value="{{item.value}}" 
+            bindinput="onContentValueInput"
+            data-index="{{index}}"
+            maxlength="500"
+            class="enhanced-input content-input"
+          />
+          <input 
+            wx:elif="{{item.type === 'image' || item.type === 'video'}}"
+            placeholder="请输入资源 URL（http:// 或 https:// 开头）" 
+            value="{{item.value}}" 
+            bindinput="onContentValueInput"
+            data-index="{{index}}"
+            class="enhanced-input content-input"
+          />
+        </view>
+      </block>
+
+      <view class="add-content-buttons">
+        <button size="mini" class="btn-add-content" bindtap="addTextBlock">
+          <text class="btn-add-icon">📝</text>
+          <text>添加文本</text>
+        </button>
+        <button size="mini" class="btn-add-content" bindtap="addImageBlock">
+          <text class="btn-add-icon">🖼️</text>
+          <text>添加图片</text>
+        </button>
+        <button size="mini" class="btn-add-content" bindtap="addVideoBlock">
+          <text class="btn-add-icon">🎬</text>
+          <text>添加视频</text>
+        </button>
+      </view>
+
+      <button class="btn-primary save-btn" loading="{{saving}}" disabled="{{saving}}" bindtap="onSaveContent">
+        {{saving ? '保存中...' : '💾 保存内容'}}
+      </button>
+    </view>
+  </view>
+</view>
+
